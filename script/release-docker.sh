@@ -22,6 +22,4 @@ fi
 cd /work/src/github.com/peco/peco
 
 /build-docker.sh
-
-find /work/artifacts/snapshot
 ghr --debug -u "$GITHUB_USERNAME" $PECO_VERSION /work/artifacts/snapshot

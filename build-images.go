@@ -12,39 +12,7 @@ import (
 	"text/template"
 )
 
-const dockerfileTmpl = `FROM ubuntu:latest
-
-RUN apt-get update
-RUN apt-get install -y curl git build-essential
-
-ENV PECO_GOVERSION  {{ .GoVersion }}
-ENV PATH /opt/local/go/bin:$PATH
-
-RUN mkdir /go-src
-COPY go/* /go-src/
-
-ENV PECO_GOFILENAME go-src/go{{ .GoVersion }}.linux-amd64.tar.gz
-RUN tar xvzf $PECO_GOFILENAME
-
-RUN rm -rf /go-src
-
-RUN mkdir -p /opt/local
-RUN mv go /opt/local/
-
-RNN rm /go*
-
-ENV PATH /work/bin:/opt/local/go/bin:$PATH
-ENV GOROOT /opt/local/go
-ENV GOPATH /work
-
-RUN go get -u github.com/laher/goxc
-RUN goxc -t
-
-RUN apt-get install -y unzip
-RUN curl -LO https://github.com/tcnksm/ghr/releases/download/v0.2.0/ghr_v0.2.0_linux_amd64.zip
-RUN unzip ghr_v0.2.0_linux_amd64.zip
-RUN mv ghr /usr/local/bin
-RUN rm -rf ghr_v0.2.0_linux_amd64.zip
+const dockerfileTmpl = `FROM lestrrat-goxc:go1.4
 
 COPY script/test-docker.sh /test-docker.sh
 COPY script/build-docker.sh /build-docker.sh
